@@ -428,7 +428,7 @@ GameObject:
   - component: {fileID: 240553348}
   - component: {fileID: 240553347}
   - component: {fileID: 240553346}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -2592,6 +2592,11 @@ MonoBehaviour:
   animatorController: {fileID: 1952779090}
   spriteRenderer: {fileID: 1952779092}
   velocityModifier: 1.25
+  direccionraycast: {x: 0, y: 0}
+  distanceModifier: 5
+  mylayers:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!50 &1952779088
 Rigidbody2D:
   serializedVersion: 4
