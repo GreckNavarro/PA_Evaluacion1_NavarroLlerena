@@ -8,6 +8,7 @@ TagManager:
   - PuntoB
   - Enemy
   - Bullet
+  - Walls
   layers:
   - Default
   - TransparentFX

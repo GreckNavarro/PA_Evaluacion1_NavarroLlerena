@@ -15,7 +15,7 @@ public class ControladorZona : MonoBehaviour
     {
         posicioninicial = ogro.transform.position;
     }
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
         resultante = player.transform.position - ogro.transform.position;
         if (collision.gameObject.tag == "Player")
@@ -23,6 +23,7 @@ public class ControladorZona : MonoBehaviour
             Detected = true;
         }
     }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         Detected = false;

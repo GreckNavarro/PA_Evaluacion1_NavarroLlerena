@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
+using System;
+using UnityEngine.Events;
 
 public class PlayerController : MonoBehaviour
 {
@@ -11,9 +14,26 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private SpriteRenderer spriteRenderer;
     [SerializeField] GameObject Prefabs;
     [SerializeField] GameObject controladordisparo;
+    [SerializeField] HealthBarController VidaPlayer;
+    [SerializeField] CamaraShake camara;
 
-     public Vector2 mouseInput;
+    
+    int vidaacutal = 100;
+    public Vector2 mouseInput;
 
+
+    //Eventos
+    public UnityEvent OnDestroyPlayer;
+    public delegate void UnityAction();
+    public event Action<int> onPlayerDamaged;
+
+
+
+
+    private void Start()
+    {
+        vidaacutal = VidaPlayer.GetCurrentValue();
+    }
     private void Update() {
         Vector2 movementPlayer = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
         myRBD2.velocity = movementPlayer * velocityModifier;
@@ -42,7 +62,34 @@ public class PlayerController : MonoBehaviour
         direccion = mouseInput;
         return direccion;
     }
+    public int GetVida()
+    {
+        return vidaacutal;
+    }
     private void CheckFlip(float x_Position){
         spriteRenderer.flipX = (x_Position - transform.position.x) < 0;
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Enemy")
+        {
+            VidaPlayer.UpdateHealth(-20);
+            vidaacutal = vidaacutal - 20;
+            camara.ShakeCamera();
+            onPlayerDamaged?.Invoke(20);
+            if (vidaacutal <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
+        if (collision.gameObject.tag == "Walls")
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnDisable()
+    {
+        OnDestroyPlayer.Invoke();
     }
 }

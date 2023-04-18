@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using UnityEngine.Events;
 
 public class PatrolMovementController : MonoBehaviour
 {
@@ -11,16 +13,29 @@ public class PatrolMovementController : MonoBehaviour
     [SerializeField] private float velocityModifier = 5f;
     private Transform currentPositionTarget;
     private int patrolPos = 0;
+    [SerializeField] int puntosbonus = 10;
+
 
     [SerializeField] private Vector2 direccionraycast;
     [SerializeField] private int distanceModifier = 15;
     [SerializeField] LayerMask mylayers;
 
 
+
+    [SerializeField] HealthBarController VidaEnemy;
+    [SerializeField] int vidaacutal;
+
+
+    //EVENTO 
+    public event Action<int> onEnemyDestroy;
+
+
+
     private void Start() {
         currentPositionTarget = checkpointsPatrol[patrolPos];
         transform.position = currentPositionTarget.position;
-        
+        vidaacutal = VidaEnemy.GetCurrentValue();
+
     }
 
     private void Update() {
@@ -63,7 +78,14 @@ public class PatrolMovementController : MonoBehaviour
     {
         if(collision.gameObject.tag == "Bullet")
         {
-            Destroy(gameObject);
+            VidaEnemy.UpdateHealth(-20);
+            vidaacutal = vidaacutal - 20;
+         
+            if (vidaacutal <= 0)
+            {
+                onEnemyDestroy?.Invoke(puntosbonus);
+                Destroy(gameObject);
+            }
         }
     }
 }
