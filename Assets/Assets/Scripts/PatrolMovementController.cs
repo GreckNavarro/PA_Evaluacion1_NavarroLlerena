@@ -12,6 +12,11 @@ public class PatrolMovementController : MonoBehaviour
     private Transform currentPositionTarget;
     private int patrolPos = 0;
 
+    [SerializeField] private Vector2 direccionraycast;
+    [SerializeField] private int distanceModifier;
+    [SerializeField] LayerMask mylayers;
+
+
     private void Start() {
         currentPositionTarget = checkpointsPatrol[patrolPos];
         transform.position = currentPositionTarget.position;
@@ -21,6 +26,9 @@ public class PatrolMovementController : MonoBehaviour
         CheckNewPoint();
 
         animatorController.SetVelocity(velocityCharacter: myRBD2.velocity.magnitude);
+
+        RaycastHit2D raycast = Physics2D.Raycast(transform.position, inputAxis, distanceModifier, mylayers);
+
     }
 
     private void CheckNewPoint(){
@@ -35,5 +43,13 @@ public class PatrolMovementController : MonoBehaviour
 
     private void CheckFlip(float x_Position){
         spriteRenderer.flipX = (x_Position - transform.position.x) < 0;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.gameObject.tag == "Bullet")
+        {
+            Destroy(gameObject);
+        }
     }
 }
