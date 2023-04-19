@@ -48,7 +48,6 @@ public class PlayerController : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0)){
 
-            Debug.Log("Right Click");
             GameObject Bullet = Instantiate(Prefabs, controladordisparo.transform.position, controladordisparo.transform.rotation);
             Bullet.GetComponent<Bullet>().SetPlayer(this);
             
@@ -82,7 +81,21 @@ public class PlayerController : MonoBehaviour
                 Destroy(gameObject);
             }
         }
-        if (collision.gameObject.tag == "Walls")
+
+        else if (collision.gameObject.tag == "BulletEnemy")
+        {
+            VidaPlayer.UpdateHealth(-20);
+            vidaacutal = vidaacutal - 20;
+            camara.ShakeCamera();
+            onPlayerDamaged?.Invoke(20);
+            if (vidaacutal <= 0)
+            {
+                Destroy(gameObject);
+            }
+        }
+        
+
+        else if (collision.gameObject.tag == "Walls")
         {
             Destroy(gameObject);
         }

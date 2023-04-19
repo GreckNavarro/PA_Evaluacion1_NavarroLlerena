@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ScoreLifeController : MonoBehaviour
 {
@@ -11,9 +12,10 @@ public class ScoreLifeController : MonoBehaviour
 
     [SerializeField] PatrolMovementController enemy1;
     [SerializeField] ControladorOgro ogro1;
+    [SerializeField] WizzardController mago1;
+    public UnityEvent OnWinner;
 
-    private int puntaje = 0;
-    int count = 0;
+    private int nivel = 0;
 
 
 
@@ -26,6 +28,7 @@ public class ScoreLifeController : MonoBehaviour
         playerController.onPlayerDamaged += HandlePlayerDamaged;
         enemy1.onEnemyDestroy += HandleEnemyDestroy;
         ogro1.onEnemyDestroy += HandleEnemyDestroy;
+        mago1.onEnemyDestroy += HandleEnemyDestroy;
     }
     private void Update()
     {
@@ -34,16 +37,16 @@ public class ScoreLifeController : MonoBehaviour
 
     private void Win()
     {
-        if(count >= 1)
+        if(nivel >= 6)
         {
-            Debug.Log("Ganaste");
+            OnWinner.Invoke();
         }
     }
     private void OnGUI()
     {
         GUI.skin.label.fontSize = 32;
         GUI.Label(new Rect(250, 90, 350, 350), string.Format("Vida Actual: {0}", vida));
-        GUI.Label(new Rect(250, 50, 350, 350), string.Format("Total Score: {0}", puntaje));
+        GUI.Label(new Rect(250, 50, 350, 350), string.Format("Nivel Actual: {0}", nivel));
     }
 
     private void HandlePlayerDamaged(int cantidadDaño)
@@ -52,8 +55,7 @@ public class ScoreLifeController : MonoBehaviour
     }
     private void HandleEnemyDestroy(int bonuspuntaje)
     {
-        puntaje += bonuspuntaje;
-        count++;
+        nivel += bonuspuntaje;
 
     }
 }

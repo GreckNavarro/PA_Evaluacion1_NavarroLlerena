@@ -13,7 +13,7 @@ public class PatrolMovementController : MonoBehaviour
     [SerializeField] private float velocityModifier = 5f;
     private Transform currentPositionTarget;
     private int patrolPos = 0;
-    [SerializeField] int puntosbonus = 10;
+    [SerializeField] int puntosbonus = 1;
 
 
     [SerializeField] private Vector2 direccionraycast;

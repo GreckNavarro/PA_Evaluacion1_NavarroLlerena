@@ -15,6 +15,10 @@ public class Bullet : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        else if(collision.gameObject.tag == "Walls")
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void SetPlayer(PlayerController newplayer)
